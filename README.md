@@ -1,10 +1,10 @@
-# AG-Grid Lattice Implementation
+# React Table Lattice Implementation
 
 ## Getting Started
 
 To download the project, simply run the following command in your command-line interface tool:
 ```sh
-git clone https://github.com/CelestialSystem/ag-grid-lattice.git
+git clone https://github.com/CelestialSystem/react-table-lattice.git
 ```
 or you can download the zip folder.
 
@@ -21,7 +21,7 @@ nvm use v8.10.1
 ### Choices to Run the Server
 To start the server follow the below steps:
 
-1. ```cd ag-grid-lattice```
+1. ```cd react-table-lattice```
 2. Install dependencies.
     ```sh
     npm install
