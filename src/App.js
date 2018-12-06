@@ -13,8 +13,6 @@ import 'react-table/react-table.css';
 import _ from 'lodash';
 
 // Material icons
-import DayIcon from '@material-ui/icons/WbSunnyOutlined';
-import NightIcon from '@material-ui/icons/Brightness3Outlined';
 import PagesIcon from '@material-ui/icons/Pages';
 import SubjectIcon from '@material-ui/icons/Subject';
 
@@ -39,6 +37,10 @@ const styles = theme => ({
   },
   link: {
     color: theme.palette.text.secondary
+  },
+  containerGrid: {
+      height: window.innerHeight-200,
+      margin: '20px 50px',
   }
 });
 
@@ -100,10 +102,10 @@ class App extends Component {
         rowData: [],
         showPivot: false,
     };
+
     this.pivotAttributes = [];
-    this.handleNightModeChange = this.handleNightModeChange.bind(this);
     this.gotData = this.gotData.bind(this);
-    this.handlePagination = this.handlePagination.bind(this);
+    this.handlePivot = this.handlePivot.bind(this);
   }
 
   componentDidMount() {
@@ -114,25 +116,27 @@ class App extends Component {
     httpHelper(httpObj, this.gotData);
   }
 
+  /**
+   * HTTP Response.
+   * @param  {Object} data [HTTP Response Object.]
+   */
   gotData({ data }) {
     this.setState({ rowData: data });
   }
 
-  handlePagination() {
+  /**
+   * Handle Pivot button click.
+   */
+  handlePivot() {
     this.setState({ showPivot: !this.state.showPivot });
   }
 
-  handleNightModeChange() {
-    const { updateTheme, nightMode } = this.props;
-    updateTheme(!nightMode);
-  }
-
   render() {
-    const { classes, nightMode } = this.props;
+    const { classes } = this.props;
     const { columnDefs, rowData, showPivot } = this.state;
     let pivotAttributes = [];
 
-    if (this.state.showPivot) {
+    if (showPivot) {
       pivotAttributes = ['region', 'subregion'];
     }
 
@@ -143,13 +147,8 @@ class App extends Component {
             <Typography variant="title" color="inherit" className={classes.flex}>
               React-Table
             </Typography>
-            <Tooltip title="Toggle Night Mode" enterDelay={300}>
-              <IconButton onClick={this.handleNightModeChange} color="inherit">
-                {nightMode ? <DayIcon /> : <NightIcon />}
-              </IconButton>
-            </Tooltip>
             <Tooltip title="Apply Pivot" enterDelay={300}>
-               <IconButton onClick={this.handlePagination} color="inherit">
+               <IconButton onClick={this.handlePivot} color="inherit">
                  {showPivot ? <PagesIcon /> : <SubjectIcon />}
                </IconButton>
             </Tooltip>
@@ -159,26 +158,23 @@ class App extends Component {
           <Grid
             item
             xs={12}
-            className={this.state.gridClass}
-            style={{
-            height: window.innerHeight-100,
-            margin: '20px 50px',
-          }}>
-          <ReactTable
-            filterable
-            data={rowData}
-            columns={columnDefs}
-            showPagination
-            showPageSizeOptions
-            showPaginationTop
-            showPaginationBottom={false}
-            defaultPageSize={20}
-            className="-striped -highlight"
-            pivotBy={pivotAttributes}
-            collapseOnSortingChange={false}
-            multiSort
-            sortable
-          />
+            className={classes.containerGrid}
+          >
+            <ReactTable
+              filterable
+              data={rowData}
+              columns={columnDefs}
+              showPagination
+              showPageSizeOptions
+              showPaginationTop
+              showPaginationBottom={false}
+              defaultPageSize={20}
+              className="-striped -highlight"
+              pivotBy={pivotAttributes}
+              collapseOnSortingChange={false}
+              multiSort
+              sortable
+            />
           </Grid>
         </Grid>
       </div>
